@@ -12,7 +12,7 @@ void mainMenu(){
     printf("4. Konversi Kelvin (K) \n");
     printf("5. Keluar program \n");
     printf("------------------------------\n");
-    printf("Pilih nomor menu: ");
+    printf("Pilih satuan suhu awal yang ingin di konversi : ");
 }
 
 void countCelcius(){
