@@ -5,7 +5,6 @@
 #include "temperature.h"
 
 void mainMenu(){
-	int pil;
 	printf("\n------- Menu Konversi Suhu -------\n");
     printf("1. Konversi Celcius (c) \n");
     printf("2. Konversi Reamur (r) \n");
@@ -14,14 +13,13 @@ void mainMenu(){
     printf("5. Keluar program \n");
     printf("------------------------------\n");
     printf("Pilih nomor menu: ");
-    scanf("%d",&pil);
-    fflush(stdin);
 }
 
-void countCelcius(float temperatureInCelcius){
+void countCelcius(){
 	float c, r, f, k;
 	printf("Masukkan nilai Celcius: ");
     scanf("%f", &c);
+    fflush(stdin);
     r = c*4/5;
     f = (c*9/5)+32;
     k = c+273.16;
@@ -29,13 +27,13 @@ void countCelcius(float temperatureInCelcius){
     printf("Celcius dalam Fahrenheit adalah %.2f\n", f);
     printf("Celcius dalam Kelvin adalah %.2f\n",k);
     printf("\n");
-    mainMenu();
 }
 
-void countReamur(float temperatureInReamur){
+void countReamur(){
 	float c, r, f, k;
 	printf("Masukkan nilai Reamur: ");
     scanf("%f",&r);
+    fflush(stdin);
     c = r*5/4;
     f = (r*9/4)+32;
     k = (r*5/4)+273.16;
@@ -43,13 +41,14 @@ void countReamur(float temperatureInReamur){
     printf("Nilai Reamur dalam Fahrenheit adalah %.2f\n", f);
     printf("Nilai Reamur dalam Kelvin adalah %.2f\n", k);
     printf("\n");
-    mainMenu();
+    
 }
 
-void countFahrenheit(float temperatureInFarenheit){
+void countFahrenheit(){
 	float c, r, f, k;
     printf("Masukkan nilai Fahrenheit: ");
     scanf("%f", &f);
+    fflush(stdin);
     c = (f*5/9)-32;
     r = (f*4/9)-32;
     k = (f-32)*5/9+273.16;
@@ -57,13 +56,14 @@ void countFahrenheit(float temperatureInFarenheit){
     printf("Nilai Fahrenheit dalam Reamur adalah %.2f\n",r);
     printf("Nilai Fahrenheit dalam Kelvin adalah %.2f\n",k);
     printf("\n");
-    mainMenu();
+    
 }
 
-void countKelvin(float temperatureInKelvin){
+void countKelvin(){
 	float c, r, f, k;
     printf("Masukkan nilai Kelvin: ");
     scanf("%f", &k);
+    fflush(stdin);
     c = k-273.16;
     r = (k-273.16)*4/5;
     f = (k-273.16)*9/5+32;

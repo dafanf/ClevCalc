@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <math.h>
 #include "tree.h"
 #define MAX 0x3f3f3f3f
 
@@ -24,6 +25,10 @@ int count(struct treeNode *root){
                 return count(root->lChild)*count(root->rChild);
                 break;
             }
+            case '^':{
+                return pow(count(root->lChild),count(root->rChild));
+                break;
+            }
         }
     }
     return root->data;
@@ -37,7 +42,9 @@ int check(char mathExpression[],int firstIndex,int lastIndex){
         firstIndex++;
     }
     for(i=firstIndex;i<=lastIndex;i++){
-        if(!isdigit(mathExpression[i])) return MAX;
+        if(!isdigit(mathExpression[i])){
+			return MAX;	
+		}
         sum=sum*10+mathExpression[i]-'0';
     }
     return sum*isOperator;
@@ -56,19 +63,16 @@ void postOrder(struct treeNode *root){
 } 
 struct treeNode * makeTree(char mathExpression[],int firstIndex,int lastIndex){
    	struct treeNode * root=(struct treeNode *)malloc(sizeof(struct treeNode));
-    int cnt=0;
-    int m;
-    int i;
-    if(firstIndex>lastIndex) return NULL;
-    int posPlusOrSub=0;//Position of plus and minus signs 
-    int numPlusOrSub=0;//Number of plus and minus signs 
-    int posDivOrMul=0;//Multiply and divide sign position 
-    int numDivOrMul=0;//Number of multiplication and division numbers
-	int posExpOrSqrt=0;
-	int numExpOrSqrt=0;
+    int posPlusOrSub=0;//Posisi dari operator penjumlahan (-) dan pengurangan (-) 
+    int numPlusOrSub=0;//Jumlah dari operator penjumlahan(+) dan pengurangan (-) 
+    int posDivOrMul=0;//Posisi dari operator perkalian(*) dan pembagian (/) 
+    int numDivOrMul=0;//Jumlah dari operator perkalian (*) dan pembagian(/)
+	int posExp=0;//Posisi dari operator pangkat (^)
+	int numExp=0;//Jumlah operator pangkat (^)
     int num;
-    num=check(mathExpression,firstIndex,lastIndex);     
-    if(num!=0x3f3f3f3f){//Only numbers 
+    num=check(mathExpression,firstIndex,lastIndex);
+	//Memeriksa jika hanya angka yang menjadi input     
+    if(num!=MAX){
         root->isOperator=0;
         root->data=num;
         root->lChild=NULL;
@@ -91,20 +95,31 @@ struct treeNode * makeTree(char mathExpression[],int firstIndex,int lastIndex){
                 numPlusOrSub++;
             }
             else if(mathExpression[k]=='*'||mathExpression[k]=='/'){
-                posDivOrMul=k;//Multiply and divide sign position 
-                numDivOrMul++;//Number of multiplication and division numbers 
+                posDivOrMul=k;
+                numDivOrMul++;
+            }
+            else if(mathExpression[k]=='^'){
+                posExp=k;
+                numExp++;
             }
         }
     }
     int pos_root;
-    //Find the root node with addition and subtraction 
+    
+    //Mencari root dengan node penjumlahan dan pengurangan
     if(numPlusOrSub){
         pos_root=posPlusOrSub;
     }
+    //Mencari root dengan node penjumlahan dan pengurangan
     else if(numDivOrMul){
         pos_root=posDivOrMul;
     }
-    else{//The root cannot be found 
+    //Mencari root dengan node perpangkatan
+    else if(numExp){
+        pos_root=posExp;
+    }
+    //Jika root tidak dapat ditemukan
+    else{
         return makeTree(mathExpression,firstIndex+1,lastIndex-1);
     }
     root->isOperator=1;
